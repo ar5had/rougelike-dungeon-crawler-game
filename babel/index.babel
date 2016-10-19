@@ -1,0 +1,82 @@
+// React component model
+// App
+// --Panel
+// --Game
+var App = React.createClass({
+	render: function() {
+		return (
+			<div className="app container" >
+				<Panel />
+				<Game />
+			</div>
+		);
+	}
+});
+
+var Panel = React.createClass({
+	render: function() {
+		return (<div className="gamePanel" >
+			<div className="col-xs-12 text-center"><h3 id="logo">Roguelike Game</h3></div>
+				<div className="col-xs-12">
+					<div className="col-xs-3 text-center">
+						Health: <span className="health">10</span>
+					</div>
+					<div className="col-xs-3 text-center">
+						Weapon: <span className="weapon">Pistol</span>
+					</div>
+					<div className="col-xs-3 text-center">
+						Attack: <span className="attack">20</span>
+					</div>
+					<div className="col-xs-3 text-center">
+						level: <span className="level">3</span>
+					</div>
+				</div>
+		</div>);
+	}
+});
+
+var Game = React.createClass({
+	getInitialState: function() {
+		var parent_this = this;
+		var levels = [1,2,3].map(function(levelNo){
+			
+			return parent_this.createLevel(levelNo);
+		});
+		return {levels: levels, currentLevel: 0};
+	},
+	createLevel: function(levelNo) {
+		var level = [];
+		for (var i = 0; i < 20; i++) {
+			level.push([]);
+			for (var j = 0; j < 60; j++) {
+				if (i === 0 || i === 19 || j === 0 || j === 59)
+					level[i][j] = "=";
+				else {
+					level[i][j] = "=";
+				}
+			}
+		}
+		return level;
+	},
+	componentDidMount: function() {
+	},
+	render: function(){
+		var level = [], arr = [];
+		for (var i = 0; i < this.state.levels[this.state.currentLevel]["length"]; i++) {
+			arr = [];
+			for (var j = 0; j < this.state.levels[this.state.currentLevel][0]["length"]; j++) {				
+				arr.push(<span className="block">{this.state.levels[this.state.currentLevel][i][j]}</span>);
+			}
+			level.push(<div className="levelRow">{arr}</div>);
+		}
+		return (
+			<div className="game col-xs-12 text-center">
+				{level}
+			</div>
+		);
+	}
+});
+
+
+ReactDOM.render(<App />, document.getElementById("app"));
+
